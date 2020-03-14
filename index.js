@@ -31,7 +31,7 @@ let glyph = run.glyphs[0].getImageForSize(128)
 
 // fs.writeFileSync('100.png', glyph.data);
 
-const encoder = undefined
+let encoder = undefined
 
 
 class StdinDiscarder {
