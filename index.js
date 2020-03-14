@@ -23,7 +23,7 @@ const fs = require('fs');
 
 const fontkit = require('fontkit');
 const emoji = require('node-emoji');
-const font = fontkit.openSync('./Apple Color Emoji.ttc').fonts[0];
+const font = fontkit.openSync('~/System/Library/Fonts/Apple Color Emoji.ttc').fonts[0];
 
 let emo = emoji.get('100');
 let run = font.layout(emo);
