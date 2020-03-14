@@ -19,19 +19,24 @@ const GIFEncoder = require('gifencoder');
 const { createCanvas } = require('canvas');
 const fs = require('fs');
 
-const encoder = new GIFEncoder(320, 240);
-// stream the results as they are available into myanimated.gif
-encoder.createReadStream().pipe(fs.createWriteStream('myanimated.gif'));
 
-encoder.start();
-encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
-encoder.setDelay(500);
+
+const fontkit = require('fontkit');
+const emoji = require('node-emoji');
+const font = fontkit.openSync('./Apple Color Emoji.ttc').fonts[0];
+
+let emo = emoji.get('100');
+let run = font.layout(emo);
+let glyph = run.glyphs[0].getImageForSize(128)
+
+// fs.writeFileSync('100.png', glyph.data);
+
+const encoder = undefined
+
 
 class StdinDiscarder {
 	constructor() {
 		this.requests = 0;
-		this.encoder = undefined
-
 		this.mutedStream = new MuteStream();
 		this.mutedStream.pipe(process.stdout);
 		this.mutedStream.mute();
@@ -57,12 +62,12 @@ class StdinDiscarder {
 
 	start() {
 		this.requests++;
-		this.encoder = new GIFEncoder(150, 50);
-		this.encoder.createReadStream().pipe(fs.createWriteStream('../../myanimated.gif'));
-		this.encoder.start();
-		this.encoder.setDelay(500);  // frame delay in ms
 
 		if (this.requests === 1) {
+			encoder = new GIFEncoder(150, 50);
+			encoder.createReadStream().pipe(fs.createWriteStream('../../myanimated.gif'));
+			encoder.start();
+			encoder.setDelay(500);  // frame delay in ms			
 			this.realStart();
 		}
 	}
@@ -74,9 +79,8 @@ class StdinDiscarder {
 
 		this.requests--;
 
-    this.encoder.finish();
-
 		if (this.requests === 0) {
+			encoder.finish();
 			this.realStop();
 		}
 	}
@@ -260,12 +264,18 @@ class Ora {
 	render() {
 		this.clear();
 		this.stream.write(this.frame());
-    const canvas = createCanvas(150, 50);
-    const ctx = canvas.getContext('2d');
+    
+	    if(encoder) {
+			const canvas = createCanvas(150, 50);
+		    const ctx = canvas.getContext('2d');
 
-    ctx.font = '48px serif';
-    ctx.fillText(this.frame(), 10, 50);
-    this.encoder.addFrame(ctx);
+		    ctx.font = '48px serif';
+		    ctx.drawImage(glyph.data, 0, 0)
+		    encoder.addFrame(ctx);    
+	    } else {
+	    	console.log('not encoding')
+	    }
+    
 
 		this.linesToClear = this.lineCount;
 
