@@ -14,9 +14,23 @@ const PREFIX_TEXT = Symbol('prefixText');
 
 const ASCII_ETX_CODE = 0x03; // Ctrl+C emits this code
 
+
+const GIFEncoder = require('gifencoder');
+const { createCanvas } = require('canvas');
+const fs = require('fs');
+
+const encoder = new GIFEncoder(320, 240);
+// stream the results as they are available into myanimated.gif
+encoder.createReadStream().pipe(fs.createWriteStream('myanimated.gif'));
+
+encoder.start();
+encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
+encoder.setDelay(500);
+
 class StdinDiscarder {
 	constructor() {
 		this.requests = 0;
+		this.encoder = undefined
 
 		this.mutedStream = new MuteStream();
 		this.mutedStream.pipe(process.stdout);
@@ -43,6 +57,10 @@ class StdinDiscarder {
 
 	start() {
 		this.requests++;
+		this.encoder = new GIFEncoder(150, 50);
+		this.encoder.createReadStream().pipe(fs.createWriteStream('../../myanimated.gif'));
+		this.encoder.start();
+		this.encoder.setDelay(500);  // frame delay in ms
 
 		if (this.requests === 1) {
 			this.realStart();
@@ -55,6 +73,8 @@ class StdinDiscarder {
 		}
 
 		this.requests--;
+
+    this.encoder.finish();
 
 		if (this.requests === 0) {
 			this.realStop();
@@ -240,6 +260,13 @@ class Ora {
 	render() {
 		this.clear();
 		this.stream.write(this.frame());
+    const canvas = createCanvas(150, 50);
+    const ctx = canvas.getContext('2d');
+
+    ctx.font = '48px serif';
+    ctx.fillText(this.frame(), 10, 50);
+    this.encoder.addFrame(ctx);
+
 		this.linesToClear = this.lineCount;
 
 		return this;
