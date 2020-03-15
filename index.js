@@ -53,6 +53,7 @@ class StdinDiscarder {
 			encoder = new GIFEncoder(150, 50);
 			encoder.createReadStream().pipe(fs.createWriteStream('./public/animated.gif'));
 			encoder.start();
+			encoder.setRepeat(0);
 			encoder.setDelay(150);  // frame delay in ms			
 			this.realStart();
 		}
