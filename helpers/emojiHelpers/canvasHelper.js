@@ -7,7 +7,7 @@ const canvas = require("canvas")
 
 
 class CanvasEmoji {
-    constructor(ctx) {
+    constructor() {
         const canvas_1 = canvas.createCanvas(150, 50);
         const ctx = canvas_1.getContext('2d');        
         this.canvasCtx = ctx;

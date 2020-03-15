@@ -254,7 +254,7 @@ class Ora {
 	    if(encoder) {
 
 			const canvasEmoji = new CanvasEmoji();
-			const ctx = canvasEmoji.drawPngReplaceEmoji({
+			const context = canvasEmoji.drawPngReplaceEmoji({
 			    text: stripAnsi(emoji.emojify(this.frame())),
 			    fillStyle: "#FFFFFF",
 			    font: "bold 36px Impact",
@@ -264,7 +264,7 @@ class Ora {
 			    emojiH: 36,
 			    length: 15
 			}, canvas);
-			encoder.addFrame(ctx);
+			encoder.addFrame(context);
 	    } else {
 	    	console.log('not encoding')
 	    }
