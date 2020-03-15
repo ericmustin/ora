@@ -37,6 +37,7 @@
 	],
 	"dependencies": {
 		"canvas": "^2.6.1",
+		"canvas-emoji": "^1.0.7",
 		"chalk": "^3.0.0",
 		"cli-cursor": "^3.1.0",
 		"cli-spinners": "^2.2.0",

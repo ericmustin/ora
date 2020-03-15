@@ -14,25 +14,12 @@ const PREFIX_TEXT = Symbol('prefixText');
 
 const ASCII_ETX_CODE = 0x03; // Ctrl+C emits this code
 
-
+const fs = require('fs');
 const GIFEncoder = require('gifencoder');
 const { createCanvas } = require('canvas');
-const fs = require('fs');
-
-
-
-const fontkit = require('fontkit');
+const { CanvasEmoji } = require("canvas-emoji");
 const emoji = require('node-emoji');
-const font = fontkit.openSync('/System/Library/Fonts/Apple Color Emoji.ttc').fonts[0];
-
-let emo = emoji.get('100');
-let run = font.layout(emo);
-let glyph = run.glyphs[0].getImageForSize(128)
-
-// fs.writeFileSync('100.png', glyph.data);
-
 let encoder = undefined
-
 
 class StdinDiscarder {
 	constructor() {
@@ -65,9 +52,9 @@ class StdinDiscarder {
 
 		if (this.requests === 1) {
 			encoder = new GIFEncoder(150, 50);
-			encoder.createReadStream().pipe(fs.createWriteStream('../../myanimated.gif'));
+			encoder.createReadStream().pipe(fs.createWriteStream('./myanimated.gif'));
 			encoder.start();
-			encoder.setDelay(500);  // frame delay in ms			
+			encoder.setDelay(150);  // frame delay in ms			
 			this.realStart();
 		}
 	}
@@ -268,10 +255,18 @@ class Ora {
 	    if(encoder) {
 			const canvas = createCanvas(150, 50);
 		    const ctx = canvas.getContext('2d');
-
-		    ctx.font = '48px serif';
-		    ctx.drawImage(glyph.data, 0, 0)
-		    encoder.addFrame(ctx);    
+			const canvasEmoji = new CanvasEmoji(ctx);
+			const result = canvasEmoji.drawPngReplaceEmoji({
+			    text: stripAnsi(emoji.emojify(this.frame())),
+			    fillStyle: "#FFFFFF",
+			    font: "bold 36px Impact",
+			    x: 0,
+			    y: 40,
+			    emojiW: 36,
+			    emojiH: 36,
+			    length: 15
+			});
+			encoder.addFrame(ctx);
 	    } else {
 	    	console.log('not encoding')
 	    }
