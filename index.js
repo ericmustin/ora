@@ -263,7 +263,7 @@ class Ora {
 			    emojiW: 36,
 			    emojiH: 36,
 			    length: 15
-			}, canvas);
+			});
 			encoder.addFrame(context);
 	    } else {
 	    	console.log('not encoding')
