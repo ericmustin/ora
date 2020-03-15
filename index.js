@@ -16,7 +16,7 @@ const ASCII_ETX_CODE = 0x03; // Ctrl+C emits this code
 
 const fs = require('fs');
 const GIFEncoder = require('gifencoder');
-const { createCanvas } = require('canvas');
+const canvas = require('canvas');
 const { CanvasEmoji } = require("canvas-emoji");
 const emoji = require('node-emoji');
 let encoder = undefined
@@ -253,8 +253,8 @@ class Ora {
 		this.stream.write(this.frame());
     
 	    if(encoder) {
-			const canvas = createCanvas(150, 50);
-		    const ctx = canvas.getContext('2d');
+			const canvas_1 = canvas.createCanvas(150, 50);
+		    const ctx = canvas_1.getContext('2d');
 			const canvasEmoji = new CanvasEmoji(ctx);
 			const result = canvasEmoji.drawPngReplaceEmoji({
 			    text: stripAnsi(emoji.emojify(this.frame())),
@@ -265,7 +265,7 @@ class Ora {
 			    emojiW: 36,
 			    emojiH: 36,
 			    length: 15
-			});
+			}, canvas);
 			encoder.addFrame(ctx);
 	    } else {
 	    	console.log('not encoding')
