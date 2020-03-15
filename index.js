@@ -16,7 +16,7 @@ const ASCII_ETX_CODE = 0x03; // Ctrl+C emits this code
 
 const fs = require('fs');
 const GIFEncoder = require('gifencoder');
-const CanvasEmoji  = require("./helpers/emojiHelpers/canvasHelper.js");
+const { CanvasEmoji }  = require("./helpers/emojiHelpers/canvasHelper.js");
 const emoji = require('node-emoji');
 let encoder = undefined
 
