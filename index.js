@@ -20,6 +20,9 @@ const { CanvasEmoji }  = require("./helpers/emojiHelpers/canvasHelper.js");
 const emoji = require('node-emoji');
 let encoder = undefined
 
+const path = require('path')
+var dir = path.join(__dirname, 'public');
+
 class StdinDiscarder {
 	constructor() {
 		this.requests = 0;
@@ -51,7 +54,8 @@ class StdinDiscarder {
 
 		if (this.requests === 1) {
 			encoder = new GIFEncoder(150, 50);
-			encoder.createReadStream().pipe(fs.createWriteStream('./public/animated.gif'));
+			console.log('path is', path.join(dir, 'animated.gif'))
+			encoder.createReadStream().pipe(fs.createWriteStream(path.join(dir, 'animated.gif'));
 			encoder.start();
 			encoder.setRepeat(0);
 			encoder.setDelay(150);  // frame delay in ms			
