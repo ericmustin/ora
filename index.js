@@ -55,7 +55,7 @@ class StdinDiscarder {
 		if (this.requests === 1) {
 			encoder = new GIFEncoder(150, 50);
 			console.log('path is', path.join(dir, 'animated.gif'))
-			encoder.createReadStream().pipe(fs.createWriteStream(path.join(dir, 'animated.gif'));
+			encoder.createReadStream().pipe(fs.createWriteStream(path.join(dir, 'animated.gif')));
 			encoder.start();
 			encoder.setRepeat(0);
 			encoder.setDelay(150);  // frame delay in ms			
