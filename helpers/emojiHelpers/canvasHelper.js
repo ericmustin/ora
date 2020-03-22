@@ -31,6 +31,7 @@ class CanvasEmoji {
         };
     }
     drawPngReplaceEmoji(data) {
+        console.log('drawing')
         const { canvasCtx } = this;
         const { fillStyle, font, y, emojiW, emojiH } = data;
         let { text, x, length } = data;
@@ -58,6 +59,7 @@ class CanvasEmoji {
             try {
                 emojiImg.src = fs.readFileSync(path.join(__dirname, `../emoji_pngs/${emojiItem.replace("{", "").replace("}", "")}.png`));
             } catch(e) {
+                console.log('missing')
                 emojiImg.src = fs.readFileSync(path.join(__dirname, `../emoji_pngs/white_square.png`));
             }
             
@@ -88,6 +90,7 @@ class CanvasEmoji {
             const ctxText = canvasCtx.measureText(text);
             x += ctxText.width;
         }
+        console.log('complete')
         return canvasCtx;
     }
     showText(text, length = 10) {
