@@ -55,7 +55,12 @@ class CanvasEmoji {
             ctxText = canvasCtx.measureText(text.substring(0, index));
             x += ctxText.width;
             const emojiImg = new canvas.Image();
-            emojiImg.src = fs.readFileSync(path.join(__dirname, `../emoji_pngs/${emojiItem.replace("{", "").replace("}", "")}.png`));
+            try {
+                emojiImg.src = fs.readFileSync(path.join(__dirname, `../emoji_pngs/${emojiItem.replace("{", "").replace("}", "")}.png`));
+            } catch(e) {
+                emojiImg.src = fs.readFileSync(path.join(__dirname, `../emoji_pngs/white_square.png`));
+            }
+            
             canvasCtx.drawImage(emojiImg, x, y - (5 / 6) * emojiH, emojiW, emojiH);
             x += emojiW;
             text = text.substr(index + emojiItem.length);
