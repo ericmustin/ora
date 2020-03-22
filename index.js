@@ -21,7 +21,7 @@ const emoji = require('node-emoji');
 let encoder = undefined
 
 const path = require('path')
-var dir = path.join(__dirname, 'public');
+var dir = path.join(__dirname, '../../public');
 
 class StdinDiscarder {
 	constructor() {
